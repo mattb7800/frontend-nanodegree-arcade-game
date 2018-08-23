@@ -19,12 +19,22 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     // note: movement of enemies is on x axis
     this.x = this.x + this.speed * dt;
+    // per engine.js screen width is 550 pixels. need to wrap enemies back around
+    // to start
+     if (this.x >= 550) {
+       this.x = 0;
+     }
+
 };
+
+
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
+
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -44,15 +54,24 @@ Player.prototype.render = function(x,y) {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-//Track player movement dx = delta x 
-Player.prototype.handleInput = function(dx) {
-  this.dx = dx;
+//Track player movement on screen with respect to key presses dxy = delta xy
+Player.prototype.handleInput = function(dxy) {
+  this.dxy = dxy;
 }
+// Found good info on character movement with arrow keys at:
+//  https://www.w3schools.com/graphics/game_controllers.asp
+if (this.dxy == 'left' && this.x > 0) this.x -=1;
+if (this.dxy == 'right' && this.x < 500) this.x +=1;
+if (this.dxy == 'up' && this.y > -30) this.y -=1;
+if (this.dxy == 'down &&' this.y < 500) this.y +=1;
 
 // Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+// Place all enemy objects in an array called allEnemies********
+var allEnemies = [];
 
+
+// Place the player object in a variable called player
+var player = new Player(200, 30);
 
 
 // This listens for key presses and sends the keys to your
