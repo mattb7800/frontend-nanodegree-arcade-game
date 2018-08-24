@@ -22,12 +22,27 @@ Enemy.prototype.update = function(dt) {
     // per engine.js screen width is 550 pixels. need to wrap enemies back around
     // to start
      if (this.x >= 550) {
-       this.x = 0;
+       this.x = -50;
      }
 
+     //Thanks to Mentor Sarah M. in the Study Group Chat for link to help with
+     // collision detection.
+     //https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
+     if (player.x < this.x + 50 &&
+      player.x + 40 > this.x &&
+      player.y  < this.y + 30 &&
+      player.y + 30 > this.y){
+        player.sprite = 'images/collision.png';
+        this.x = -50;
+        SetTimeout(function() {
+          player.sprite = 'images/char-boy.png'
+          player.x = 200;
+          player.y = 400;
+        }, 1000);
+
+      }
+
 };
-
-
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
@@ -50,28 +65,44 @@ Player.prototype.update = function() {
 };
 
 // Draw player on screen
-Player.prototype.render = function(x,y) {
+Player.prototype.render = function(x, y) {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-//Track player movement on screen with respect to key presses dxy = delta xy
-Player.prototype.handleInput = function(dxy) {
-  this.dxy = dxy;
-}
+//Track player movement on screen with respect to key presses, d = delta
+Player.prototype.handleInput = function(d) {
+  this.d = d;
+
 // Found good info on character movement with arrow keys at:
 //  https://www.w3schools.com/graphics/game_controllers.asp
-if (this.dxy == 'left' && this.x > 0) this.x -=1;
-if (this.dxy == 'right' && this.x < 500) this.x +=1;
-if (this.dxy == 'up' && this.y > -30) this.y -=1;
-if (this.dxy == 'down &&' this.y < 500) this.y +=1;
+if (this.d == 'left' && this.x > 0) this.x -=101;
+if (this.d == 'up' && this.y > -30) this.y -=83;
+if (this.d == 'right' && this.x < 500) this.x +=101;
+if (this.d == 'down' && this.y < 500) this.y +=83;
 
+// Player wins when at water. Go back to start
+if (this.y < 30) {
+  this.x = 200;
+  this.y= 400;
+  }
+};
 // Now instantiate your objects.
+// Set initial position and speed of Enemies
+let enemyStartPosition = [55, 140, 240, 55, 240];
+let enemySpeed = [100, 200, 150, 125, 100];
+
+
 // Place all enemy objects in an array called allEnemies********
 var allEnemies = [];
+  for (i = 0; i < 6; i++) {
+    allEnemies.push(new Enemy(-20, enemyStartPosition[i], enemySpeed[i])
+  )};
 
 
-// Place the player object in a variable called player
-var player = new Player(200, 30);
+
+// Place the player object in a variable called player puts player at started
+// postion.
+const player = new Player(200, 400);
 
 
 // This listens for key presses and sends the keys to your
