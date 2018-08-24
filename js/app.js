@@ -33,12 +33,12 @@ Enemy.prototype.update = function(dt) {
       player.y  < this.y + 30 &&
       player.y + 30 > this.y){
         player.sprite = 'images/collision.png';
-        this.x = -50;
-        SetTimeout(function() {
+        this.x = 50;
+        setTimeout(function() {
           player.sprite = 'images/char-boy.png'
           player.x = 200;
           player.y = 400;
-        }, 1000);
+        }, 100);
 
       }
 
