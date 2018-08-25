@@ -34,6 +34,7 @@ Enemy.prototype.update = function(dt) {
       player.y + 30 > this.y){
         player.sprite = 'images/collision.png';
         this.x = 50;
+        alert('Opps, Try again.')
         setTimeout(function() {
           player.sprite = 'images/char-boy.png'
           player.x = 200;
@@ -84,6 +85,7 @@ if (this.d == 'down' && this.y < 500) this.y +=83;
 if (this.y < 30) {
   this.x = 200;
   this.y= 400;
+  alert('you did it. Congratulations!')
   }
 };
 // Now instantiate your objects.
